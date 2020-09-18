@@ -6,4 +6,4 @@ Built using [Rust](https://www.rust-lang.org/).
 ## Modes of Operation
 (Subject to change)
 - Mouse Output
-    Emulates mouse button presses with morse code.
+    - Emulates mouse button presses with morse code.
