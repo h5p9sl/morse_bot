@@ -1,5 +1,5 @@
 [package]
-name = "MorseBot"
+name = "morsebot"
 version = "0.1.0"
 authors = ["h5p9sl <21267024+h5p9sl@users.noreply.github.com>"]
 edition = "2018"
@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 inputbot = "0.5"
+clap = "2.33"
+ron = "0.6"

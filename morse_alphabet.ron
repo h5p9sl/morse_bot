@@ -1,0 +1,96 @@
+[
+  (' ', "/"),
+  ('0', "-----"),
+  ('1', ".----"),
+  ('2', "..---"),
+  ('3', "...--"),
+  ('4', "....-"),
+  ('5', "....."),
+  ('6', "-...."),
+  ('7', "--..."),
+  ('8', "---.."),
+  ('9', "----."),
+  ('A', ".-"),
+  ('B', "-..."),
+  ('C', "-.-."),
+  ('D', "-.."),
+  ('E', "."),
+  ('F', "..-."),
+  ('G', "--."),
+  ('H', "...."),
+  ('I', ".."),
+  ('J', ".---"),
+  ('K', "-.-"),
+  ('L', ".-.."),
+  ('M', "--"),
+  ('N', "-."),
+  ('O', "---"),
+  ('P', ".--."),
+  ('Q', "--.-"),
+  ('R', ".-."),
+  ('S', "..."),
+  ('T', "-"),
+  ('U', "..-"),
+  ('V', "...-"),
+  ('W', ".--"),
+  ('X', "-..-"),
+  ('Y', "-.--"),
+  ('Z', "--.."),
+  ('Á', ".--.-"),
+  ('Ä', ".-.-"),
+  ('Å', ".--.-"),
+  ('É', "..-.."),
+  ('Ñ', "--.--"),
+  ('Ö', "---."),
+  ('Ü', "..--"),
+]
+
+  /*
+     Full-stop (period)      .-.-.-
+     Comma   --..--
+     Colon   ---...
+     Question mark (query)   ..--..
+     Apostrophe      .----.
+     Hyphen  -....-
+     Slash ("/")     -..-.
+     Brackets (parentheses)  -.--.-
+     Quotation marks .-..-.
+     At sign .--.-.
+     Equals sign     -...-
+
+     Prosign Morse
+     AA, New line    .-.-
+     AR, End of message      .-.-.
+     AS, Wait        .-...
+     BK, Break       -...-.-
+     BT, New paragraph       -...-
+     CL, Going off the air ("clear") -.-..-..
+     CT, Start copying       -.-.-
+     DO, Change to wabun code        -..---
+     KN, Invite a specific station to transmit       -.--.
+     SK, End of transmission (also VA)       ...-.-
+     SN, Understood (also VE)        ...-.
+     SOS, Distress message   ...---...
+
+     Other Phrases   Abbreviation
+     Over    K
+     Roger   R
+     See you later   CUL
+     Be seeing you   BCNU
+     You're  UR
+     Signal report   RST
+     Best regards    73
+     Love and kisses 88
+
+     Q Code  Meaning
+     QSL     I acknowledge receipt
+     QSL?    Do you acknowledge?
+     QRX     Wait
+     QRX?    Should I wait?
+     QRV     I am ready to copy
+     QRV?    Are you ready to copy?
+     QRL     The frequency is in use
+     QRL?    Is the frequency in use?
+     QTH     My location is...
+     QTH?    What is your location?
+   */
