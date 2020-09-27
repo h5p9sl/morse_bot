@@ -79,46 +79,45 @@ impl Executor {
     }
 
     pub fn execute(&self) {
+        let mut space_needed = false;
         for morse_char in &self.message {
+            if space_needed {
+                // Letter space: 3 units
+                std::thread::sleep(self.unit_duration * 3);
+            }
             for c in morse_char.chars() {
-                // Signal on
                 std::thread::sleep(
                     match c {
                         '/' => {
-                            // Word space: 7 units (in total)
-                            // 5 + `letter space` (2) = 7
-                            Some(self.unit_duration * 5)
+                            // Word space: 7 units
+                            Some(self.unit_duration * 7)
                         }
-                        '.' => {
-                            (self.callback)(State::Down);
-                            // Short signal: 1 unit
-                            Some(self.unit_duration)
-                        }
-                        '-' | '_' => {
-                            (self.callback)(State::Down);
-                            // Long signal: 3 units
-                            Some(self.unit_duration * 3)
-                        }
-                        _ => None,
-                    }
-                    .unwrap_or(Duration::from_secs(0)),
-                );
-
-                // Signal off
-                std::thread::sleep(
-                    match c {
                         '.' | '-' | '_' => {
-                            (self.callback)(State::Up);
-                            // Symbol space: 1 unit
-                            Some(self.unit_duration)
+                            if space_needed {
+                                // Symbol space: 1 unit
+                                std::thread::sleep(self.unit_duration);
+                            }
+                            // Signal on
+                            (self.callback)(State::Down);
+                            match c {
+                                '.' => Some(self.unit_duration),
+                                '-' | '_' => Some(self.unit_duration * 3),
+                                _ => None,
+                            }
                         }
                         _ => None,
                     }
                     .unwrap_or(Duration::from_secs(0)),
                 );
+                space_needed = match c {
+                    '.' | '-' | '_' => {
+                        (self.callback)(State::Up);
+                        true
+                    }
+                    _ => false,
+                };
             }
-            // Letter space: 3 units (in total)
-            std::thread::sleep(self.unit_duration * 2);
+            space_needed = true;
         }
     }
 }
