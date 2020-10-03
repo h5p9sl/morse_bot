@@ -1,3 +1,5 @@
+#![feature(test)]
+
 use clap::{crate_version, Arg};
 use inputbot::MouseButton;
 use std::time::Duration;

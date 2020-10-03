@@ -141,12 +141,25 @@ impl Executor {
 
 #[cfg(test)]
 mod tests {
+    extern crate test;
     use crate::morse::*;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_tests(b: &mut Bencher) {
+        b.iter(|| {
+            to_morse_tests();
+            from_morse_tests();
+        });
+    }
 
     #[test]
     fn to_morse_tests() {
         let converter = Alphabet::new();
-        assert_eq!(converter.to_morse("Hello World"), ".... . .-.. .-.. --- / .-- --- .-. .-.. -..");
+        assert_eq!(
+            converter.to_morse("Hello World"),
+            ".... . .-.. .-.. --- / .-- --- .-. .-.. -.."
+        );
         assert_eq!(converter.to_morse("    Test    "), "- . ... -");
         assert_eq!(converter.to_morse(".-"), ".-.-.- -....-");
         assert_eq!(converter.to_morse("\x00te\x00st\x00"), "- . ... -");
