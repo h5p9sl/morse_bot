@@ -21,25 +21,42 @@ impl Alphabet {
         }
     }
 
-    /// Converts a string to morse code
-    pub fn to_morse<S: Into<String>>(&self, message: S) -> Vec<String> {
-        let msg = message.into();
-        let mut result = Vec::<String>::new();
-        for c in msg.to_uppercase().chars() {
+    /// Converts morse code into an ascii string
+    pub fn from_morse<S: Into<String>>(&self, morse: S) -> String {
+        let msg = morse.into();
+        let mut result = String::new();
+        for c in msg.trim().to_uppercase().split(' ') {
             for m in &self.alphabet {
-                if c == m.0 {
-                    result.push(m.1.clone());
+                if c == m.1 {
+                    result.push(m.0);
+                    break;
                 }
             }
         }
         result
+    }
+
+    /// Converts a string to morse code
+    pub fn to_morse<S: Into<String>>(&self, message: S) -> String {
+        let msg = message.into();
+        let mut result = String::new();
+        for c in msg.trim().to_uppercase().chars() {
+            for m in &self.alphabet {
+                if c == m.0 {
+                    result.push_str(&m.1);
+                    result.push(' ');
+                    break;
+                }
+            }
+        }
+        result.trim().to_string()
     }
 }
 
 /// The virtual morse keyer.
 /// This struct handles the timing and execution of the morse code
 pub struct Executor {
-    message: Vec<String>,
+    message: String,
     unit_duration: Duration,
     callback: Box<dyn Fn(State)>,
 }
@@ -60,7 +77,7 @@ impl Executor {
         }
     }
 
-    pub fn with_message(mut self, message: Vec<String>) -> Executor {
+    pub fn with_message(mut self, message: String) -> Executor {
         self.message = message;
         self
     }
@@ -80,7 +97,7 @@ impl Executor {
 
     pub fn execute(&self) {
         let mut space_needed = false;
-        for morse_char in &self.message {
+        for morse_char in self.message.split(' ') {
             if space_needed {
                 // Letter space: 3 units
                 std::thread::sleep(self.unit_duration * 3);
@@ -119,5 +136,28 @@ impl Executor {
             }
             space_needed = true;
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::morse::*;
+
+    #[test]
+    fn to_morse_tests() {
+        let converter = Alphabet::new();
+        assert_eq!(converter.to_morse("Hello World"), ".... . .-.. .-.. --- / .-- --- .-. .-.. -..");
+        assert_eq!(converter.to_morse("    Test    "), "- . ... -");
+        assert_eq!(converter.to_morse(".-"), ".-.-.- -....-");
+        assert_eq!(converter.to_morse("\x00te\x00st\x00"), "- . ... -");
+    }
+
+    #[test]
+    fn from_morse_tests() {
+        let converter = Alphabet::new();
+        assert_eq!(converter.from_morse("- . ... -").to_uppercase(), "TEST");
+        assert_eq!(converter.from_morse(".- / -...").to_uppercase(), "A B");
+        // TODO
+        // assert_eq!(converter.from_morse(".-/-...").to_uppercase(), "A B");
     }
 }
