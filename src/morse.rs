@@ -139,7 +139,17 @@ impl Executor {
 
 #[cfg(test)]
 mod tests {
+    extern crate test;
     use crate::morse::*;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_tests(b: &mut Bencher) {
+        b.iter(|| {
+            to_morse_tests();
+            from_morse_tests();
+        });
+    }
 
     #[test]
     fn to_morse_tests() {
