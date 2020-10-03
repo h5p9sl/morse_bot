@@ -1,0 +1,3 @@
+[submodule "inputbot"]
+	path = inputbot
+	url = https://github.com/h5p9sl/InputBot

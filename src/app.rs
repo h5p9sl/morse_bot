@@ -1,4 +1,5 @@
 use clap::{crate_version, AppSettings, Arg, ArgMatches};
+use inputbot::strum::VariantNames;
 
 pub fn init_logger() {
     use env_logger::fmt::TimestampPrecision;
@@ -37,7 +38,15 @@ pub fn create_app() -> ArgMatches<'static> {
                 .help("Defines which mouse button to use for sending morse, possible values are non-negative numbers")
                 .takes_value(true)
                 .default_value("1")
-                .required(true)
+                .required_unless("key")
+                ,
+            Arg::with_name("key")
+                .short("k")
+                .long("key")
+                .help("Defines which keyboard key to use for sending morse")
+                .takes_value(true)
+                .possible_values(&inputbot::KeybdKey::VARIANTS)
+                .hide_possible_values(true)
                 ,
             Arg::with_name("file")
                 .short("f")

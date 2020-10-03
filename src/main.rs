@@ -3,7 +3,7 @@
 #[macro_use]
 extern crate log;
 
-use inputbot::MouseButton;
+use inputbot::{MouseButton, KeybdKey};
 use std::{str::FromStr, time::Duration};
 
 mod app;
@@ -32,8 +32,23 @@ fn main() {
         std::thread::sleep(Duration::from_secs_f32(f32::from_str(delay).unwrap()));
     }
 
-    let button =
-        MouseButton::OtherButton(u32::from_str(matches.value_of("button").unwrap()).unwrap());
+    let button = {
+        if let Some(button) = matches.value_of("mouse") {
+            Some(MouseButton::OtherButton(u32::from_str(button).unwrap()))
+        } else {
+            None
+        }
+    };
+    debug!("button = {:?}", button);
+
+    let key = {
+        if let Some(key) = matches.value_of("key") {
+            Some(KeybdKey::from_str(&key).unwrap())
+        } else {
+            None
+        }
+    };
+    debug!("key = {:?}", key);
 
     info!("Sending message");
     morse::Executor::new()
@@ -41,9 +56,17 @@ fn main() {
         .with_wpm(wpm)
         .with_callback(move |state| {
             if state == morse::State::Down {
-                button.press();
+                if let Some(key) = key {
+                    key.press();
+                } else {
+                    button.unwrap().press();
+                }
             } else {
-                button.release();
+                if let Some(key) = key {
+                    key.release();
+                } else {
+                    button.unwrap().release();
+                }
             }
         })
         .execute();
