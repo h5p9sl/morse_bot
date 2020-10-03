@@ -1,4 +1,5 @@
 use std::time::Duration;
+use std::collections::HashMap;
 
 /// Describes the state of the virtual morse keyer
 #[derive(Debug, PartialEq)]
@@ -10,7 +11,7 @@ pub enum State {
 #[derive(Debug)]
 /// Dynamic Morse-code alphabet loader & converter
 pub struct Alphabet {
-    alphabet: Vec<(char, String)>,
+    alphabet: HashMap<char, String>,
 }
 
 impl Alphabet {
@@ -26,9 +27,9 @@ impl Alphabet {
         let msg = morse.into();
         let mut result = String::new();
         for c in msg.trim().to_uppercase().split(' ') {
-            for m in &self.alphabet {
+            for m in self.alphabet.iter() {
                 if c == m.1 {
-                    result.push(m.0);
+                    result.push(*m.0);
                     break;
                 }
             }
@@ -41,12 +42,9 @@ impl Alphabet {
         let msg = message.into();
         let mut result = String::new();
         for c in msg.trim().to_uppercase().chars() {
-            for m in &self.alphabet {
-                if c == m.0 {
-                    result.push_str(&m.1);
-                    result.push(' ');
-                    break;
-                }
+            if let Some(m) = self.alphabet.get(&c) {
+                result.push_str(m);
+                result.push(' ');
             }
         }
         result.trim().to_string()
