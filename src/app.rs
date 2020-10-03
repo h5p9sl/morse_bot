@@ -1,5 +1,13 @@
 use clap::{crate_version, AppSettings, Arg, ArgMatches};
 
+pub fn init_logger() {
+    use env_logger::fmt::TimestampPrecision;
+    env_logger::builder()
+        .filter(Some("morsebot"), log::LevelFilter::Info)
+        .format_timestamp(Some(TimestampPrecision::Millis))
+        .init();
+}
+
 pub fn create_app() -> ArgMatches<'static> {
     clap::App::new("Morse Bot")
         .setting(AppSettings::ColoredHelp)
@@ -29,7 +37,7 @@ pub fn create_app() -> ArgMatches<'static> {
                 .help("Defines which mouse button to use for sending morse, possible values are non-negative numbers")
                 .takes_value(true)
                 .default_value("1")
-                .required_unless("key")
+                .required(true)
                 ,
             Arg::with_name("file")
                 .short("f")

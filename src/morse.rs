@@ -33,6 +33,7 @@ impl Alphabet {
                 }
             }
         }
+        debug!("Converted \"{}\" -> \"{}\"", msg, result);
         result
     }
 
@@ -49,6 +50,7 @@ impl Alphabet {
                 }
             }
         }
+        debug!("Converted \"{}\" -> \"{}\"", msg, result.trim());
         result.trim().to_string()
     }
 }
@@ -103,6 +105,7 @@ impl Executor {
                 std::thread::sleep(self.unit_duration * 3);
             }
             for c in morse_char.chars() {
+                debug!("\'{}\': SIGNAL ON", c);
                 std::thread::sleep(
                     match c {
                         '/' => {
@@ -119,13 +122,14 @@ impl Executor {
                             match c {
                                 '.' => Some(self.unit_duration),
                                 '-' | '_' => Some(self.unit_duration * 3),
-                                _ => None,
+                                _ => panic!("Invalid morse symbol: {}", c),
                             }
                         }
                         _ => None,
                     }
                     .unwrap_or(Duration::from_secs(0)),
                 );
+                debug!("\'{}\': SIGNAL OFF", c);
                 space_needed = match c {
                     '.' | '-' | '_' => {
                         (self.callback)(State::Up);
