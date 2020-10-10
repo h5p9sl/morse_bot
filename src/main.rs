@@ -33,7 +33,7 @@ fn main() {
     }
 
     let button =
-        MouseButton::OtherButton(u32::from_str(matches.value_of("button").unwrap()).unwrap());
+        MouseButton::OtherButton(u32::from_str(matches.value_of("mouse").unwrap()).unwrap());
 
     info!("Sending message");
     morse::Executor::new()
